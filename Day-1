@@ -1,0 +1,90 @@
+-- DAY 1 Cover Basic Terminology and some commands like Create, Use, Drop, Insert into Table, Select Command....
+
+create database CompanyDB;
+use CompanyDB;
+create table Employees ( 
+id INT primary key,
+name varchar(100),
+department varchar(100),
+salary int
+);
+
+insert into Employees(id,name,department,salary)
+values
+(1,'Rohit','Engineering',750000),
+(2,'Priya','Marketing',500000),
+(3,'Vedant','Marketing',550000),
+(4,'Yashwant','Engineering',600000),
+(5,'Aman','Marketing',560000);
+
+-- Show all employees name and salaries.
+select name, salary from Employees;
+
+-- show all employees and their salaries whose department is 'Engineering' And 'Salary'>55000
+select name, salary from Employees 
+where department = 'Engineering' and salary > 55000;
+
+-- List employees in sorted order.
+select * from employees 
+order by salary desc;
+
+-- Adding more Enteries. 
+insert into Employees(id,name,department,salary)
+values
+(6,'Sonali','HR',670000),
+(7,'Yashiii','Engineering',690000),
+(8,'Devanshu','Marketing',510000),
+(9,'Chetan','HR',630000),
+(10,'Niyati','Engineering',615000);
+
+-- show all employees
+select * from Employees;
+
+-- show only id and name
+select id, name from Employees;
+
+-- show a fixed message for every employee
+select name,' is a part of our team' as message from Employees;
+
+-- show name and salary as custom alias
+select name as EmployeeName , salary as AnnualSalary from Employees;
+
+-- show name and double their salary
+select name as EmployeeName , salary*2 as UpdatesSalary from Employees;
+
+-- Level 2 (Filtering with WHERE)
+-- get Employees who are in Engineering
+select name as EmployeeName from Employees
+where department = 'Engineering';
+
+-- get Employees earning more than 550000
+select name as EmployeeName from EMployees 
+where salary > 670000;
+
+-- get Employees where department is HR and salary is greater than 550000
+select name from Employees
+where department = 'HR' and salary > 550000;
+
+-- get Employees with salary between 550000 and 690000
+select * from Employees 
+where salary between 550000 and 690000;
+
+-- get Employees whose name contains 'an'
+select name from Employees
+where name like '%an%';
+
+-- get Employees who are not from Engineering
+select * from Employees
+where department <> 'Engineering';
+
+-- get Employees where salary is divisible by 500000
+select * from Employees
+where salary % 500000 = 0;
+
+-- get Employees where name length > 8
+select * from Employees
+where Length(name) <= 6;
+
+-- get Employees where salary is not between 650000 and 80000
+select * from Employees 
+where salary not between 650000 and 800000;
