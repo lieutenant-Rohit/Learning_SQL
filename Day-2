@@ -1,0 +1,91 @@
+Today we learn about order by , group by and practise multiple queries on it. Database is same as yesterdays!!...
+
+-- Sort Employees by descending order of their salary
+select * from Employees
+order by salary desc;
+
+-- Sort Employees by Department name and within each deapartment sort by salary
+select name ,department, salary
+from Employees
+order by department ASC, salary Desc;
+
+-- Using aliases in sorting
+select name , salary as Annual_Salary from Employees
+order by salary desc;
+
+-- top 3 highest salary Employee
+select * from Employees
+order by salary Desc
+Limit 3;
+
+-- sort by the length of their name
+select * from Employees
+order by length(name) desc;
+
+-- LEVEL 4 AGGREGATION AND GROUPING
+-- COUNT Number of Employees and display using Alias
+SELECT count(*) AS Total_Employees
+FROM Employees;
+
+-- Total Salary paid to all Employees
+select sum(salary) as Total_Salary
+from Employees;
+
+-- AVG Salary
+select avg(salary) as Avg_Salary
+from Employees;
+
+-- MAX Salary
+select max(salary) as MAX_Salary
+from Employees;
+
+/* Show each unique Department
+Count no of employee in each department
+alias as Total Employees*/
+
+select department, count(*) as Total_Employees  from Employees
+group by department;
+
+/* Show each department 
+calculate average salary 
+onyl include department with avg salary>750000
+alias the result as Avg_Salary*/
+
+select department, avg(salary) as AVG_Salary
+from Employees
+group by department
+having avg(salary) > 550000;
+
+/* Show each Department 
+calculate total salary of each department
+only include department having total salary greater than 2000000
+alias as Total salary */
+
+select department, sum(salary) as Total_Salary
+from Employees
+group by department
+having sum(salary) > 2000000;
+
+-- Find highesh salary of each Department
+select department , MAX(salary) As Highest_Salary
+from Employees
+group by department
+order by Highest_Salary asc;
+
+-- Show department with less that 4 Employees
+select department , count(*) as Total_Employees
+from Employees
+group by department having count(*) < 4;
+
+-- Department with more that 2 Employees and avg salary > 540000
+select department , count(*) as Total_Employes , avg(salary) as AVG_SALARY
+from Employees
+group by department
+having count(*) > 3 and avg(salary)>510000;
+
+-- Adding join_year column.
+
+alter table Employees
+add join_year INT;
+
+select * from Employees;
