@@ -1,0 +1,179 @@
+Today we update database and insert new entries then practise group by , where, limit, offset 
+
+-- LEVEL 5 Combining where with group by.
+
+use CompanyDB;
+
+-- Count Engineering Employee by Join Year
+select join_year , count(*) as Total_Employees
+from Employees
+where department = 'Engineering'
+group by join_year
+order by join_year asc;
+
+-- Average Salary of HR Employees by Join year
+select join_year , avg(salary) as AVG_SALARY
+from Employees
+where department = 'HR'
+group by join_year ;
+
+-- Updating DataBase
+INSERT INTO employees (id, name, department, salary, join_year)
+VALUES
+(11, 'Aarav', 'Engineering', 750000, 2021),
+(12, 'Sneha', 'Marketing', 620000, 2022),
+(13, 'Rohan', 'HR', 590000, 2024),         
+(14, 'Isha', 'Engineering', 800000, 2021),
+(15, 'Kunal', 'Marketing', 640000, 2024), 
+(16, 'Neha', 'HR', 610000, 2023),
+(17, 'Aditya', 'Engineering', 770000, 2022),
+(18, 'Yamini', 'Marketing', 660000, 2023),
+(19, 'Vikram', 'HR', 600000, 2024),        
+(20, 'Meera', 'Engineering', 790000, 2022);
+
+select * from Employees;
+
+-- Total Salary of employees who joined after 2021
+select join_year, sum(salary) as Total_Salary
+from Employees
+where join_year > 2021
+group by join_year;
+
+-- department with more than 2 Employees who joined after 2021
+select department , count(*) as Total_Employees
+ from Employees
+ where join_year > 2021
+ group by department 
+ having count(*) > 2;
+ 
+ -- Select deparmtent and list employees in department where salary > 500000 
+SELECT department, GROUP_CONCAT(name) AS names
+FROM Employees
+where salary > 500000
+GROUP BY department;
+
+/* list each department and its average salary, 
+but only include departments 
+where the average salary is higher than the overall average salary across all employees. */
+
+select department , avg(salary) as Avg_SAl , count(*) as Total_Emp
+from Employees
+group by department 
+having avg(salary) > (select avg(salary) from Employees);
+
+-- Rank departments by average salary, but only include departments with at least 3 employees who joined in 2024.
+
+select department , avg(salary) as AVG_SALARY , count(*) as Total_Employees
+from Employees
+where join_year >= 2022
+group by department 
+having count(*) > 5
+order by avg(salary) desc;
+
+-- REVISION
+
+-- List departments with more than 4 employees and an average salary above ₹750000.
+select department, count(*) as Total_Employees , avg(salary) as AVG_Salary 
+from Employees
+group by department
+having count(*) > 4 and avg(salary) > 750000;
+
+/*List each department, its average salary, and only include those 
+where the department’s average salary is greater than the overall average salary across all employees.*/
+select department , avg(salary) as AVG_salary 
+from Employees
+group by department 
+having avg(salary) > (select avg(salary) from Employees);
+
+-- for each department, show the name of the highest-paid employee.
+SELECT department, name, salary
+FROM Employees e
+WHERE salary = (
+  SELECT MAX(salary)
+  FROM Employees
+  WHERE department = e.department
+);
+
+-- for each department, show the name of the lastest joined
+select department , name, join_year
+from Employees e
+where join_year = (select max(join_year) from Employees where department = e.department);
+
+use CompanyDB;
+
+-- Distinct Keyword
+-- return Unique department from Employees
+select  distinct department
+from Employees;
+
+-- list all unique joining year
+select distinct join_year from Employees;
+
+-- count how many unique department exists
+select count(distinct(department)) as No_OF_Department from Employees;
+
+-- count unique join years for Engineering department
+select count(distinct(join_year)) as No_Of_Join_year from Employees
+where department = 'Engineering';
+
+-- count unique department with employees who joined after 2022
+select count(distinct(department)) as Department from Employees
+where join_year > 2022;
+
+-- list unique salary bands from engineering employees
+select distinct 
+      Case 
+         when salary > 700000 then 'High'
+         when salary > 600000 then 'Medium'
+         else 'Low'
+	 end as Salary_band
+     from Employees
+     where department = 'Engineering';
+
+
+-- list unique combinations of department and salary band
+select distinct department,
+    case 
+       when salary > 700000 then 'High'
+       when salary > 600000 then 'Medium'
+       else 'low'
+	end as Salary_band 
+       from Employees;
+       
+-- Limit Keyword -> controls how many rows you can see
+-- Show top 5 highest paid Employees
+select name,salary 
+from Employees 
+order by salary desc
+limit 5;
+
+-- show 3 most recent joins
+select name, join_year
+from Employees 
+order by join_year desc
+limit 3 ;
+
+-- show top 2 department by total salary
+select department, sum(salary) as Total_salary
+from Employees
+group by department
+order by sum(salary) desc
+limit 2;
+
+-- show top 3 join years with most employees
+select join_year, count(*) as Total_Employees
+from Employees
+group by join_year 
+order by Total_Employees desc
+limit 3;
+
+-- show top 5 employees with lowest salary who joined in 2023
+select name , salary from Employees 
+where join_year = 2023
+order by salary asc
+limit 5;
+
+-- BETWEEN KEYWORD - filter value between 2 end points(inclusive)
+select name, salary
+from Employees
+where salary between 550000 and 650000;
