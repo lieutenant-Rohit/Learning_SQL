@@ -1,0 +1,107 @@
+-- Today we did, Between, like, In , Not in and Case Statement. 
+-- BETWEEN KEYWORD - filter value between 2 end points(inclusive)
+select name, salary
+from Employees
+where salary between 550000 and 650000;
+
+-- Show Employees where salary is betwwen 5,00,000 and 7,50,000 and are from engineering department
+use CompanyDB;
+
+select name, salary from Employees 
+where department = 'Engineering' and salary between 500000 and 750000
+order by salary desc;
+
+-- show Employees who salary is not between 400000 and 700000
+select name , salary from Employees
+where salary not between 400000 and 700000;
+
+-- LIKE -> Is used for specified pattern in a column
+-- 1. '%' -> any sequence of character
+-- 2. '_' -> Exactly one character
+
+-- Find Employees who name begans with 'S'
+select * from Employees
+where name like 'S%';
+
+-- Find Employees where department that contains the substring 'ENG'
+select name, department from Employees
+where department like 'ENG%';
+
+-- Find Employees whose name have 'a' as the Second letter
+select * from Employees
+where name like '_a%';
+
+-- Find Employees where department have exactly 2 letters.
+select * from Employees
+where department like '__';
+
+-- IN AND NOT IN -> Help to filter based on specific value.
+-- Find Employees where department is either 'HR, Engineering or Marketing'
+select * from Employees 
+where department in ('HR','Engineering','Marketing');
+
+-- CASE STATEMENT -> Lets you apply conditional logic inside sql queries.
+-- Example
+SELECT 
+    name,
+    CASE 
+        WHEN salary > 700000 THEN 'High'
+        WHEN salary > 500000 THEN 'Medium'
+        ELSE 'Low'
+    END AS Salary_band
+FROM Employees;
+
+-- Group Employees by when they joined the company
+select name,
+     case 
+        when join_year > 2023 then 'Rookie'
+        when join_year > 2021 then 'Experienced'
+        else 'EXPERT'
+	end as Experience 
+    from Employees
+    order by name ;
+    
+-- Add bonus to salary 
+select name, salary,
+   case 
+      when department = 'Engineering' then salary + 100000
+      else salary + 0
+	end as 'Bonus'
+from Employees;
+
+-- Set Deparment CODE
+SELECT name, 
+    CASE 
+        WHEN department = 'HR' THEN 'D01'
+        WHEN department = 'Engineering' THEN 'D02'
+        WHEN department = 'Marketing' THEN 'D03'
+        ELSE 'D04'
+    END AS bonus
+FROM Employees
+order by bonus;
+
+-- SQL query to display the total number of employees and the number of bonus-eligible employees(salary > 700000) for each department.
+select department,
+       count(*) as Total_Employees,
+	   count(Case when salary > 700000 then 1 END) as bonus_eligible 
+	from Employees
+    group by department;
+    
+-- sql query to display the total numbers of employees and the number of employees who joined after 2021, grouped by department...alter
+select department,
+       count(*) as Total_Employees,
+       count(case when join_year > 2021 then 1 END) as New_Joinner
+       from Employees
+       group by department;
+       
+-- Group Employees with salary band and count them 
+select 
+     case 
+        when salary > 700000 then 'Executive'
+        when salary > 500000 then 'Mid-Level'
+        else 'Entry-Level'
+	End as Salary_band,
+    count(*) as Employee_Count
+    from Employees
+    group by Salary_band
+    having count(*) > 2;
