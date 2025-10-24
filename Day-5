@@ -1,1 +1,61 @@
 Primray Key, Foreign, Normalisation (1NF,2NF,3NF)
+
+use CompanyDB;
+create table Books(
+book_id int primary key,
+book_title varchar(100),
+author varchar(100));
+
+ALTER TABLE Books
+DROP PRIMARY KEY;
+
+ALTER TABLE Books
+ADD PRIMARY KEY (book_id, author);
+
+insert into Books(book_id,book_title,author)
+values
+(1,'DBMS Concept','Navathe'),
+(1,'DBMC Concept','Sudarshan'),
+(2,'Lets Sql','James'),
+(2,'Lets Sql','Tim');
+
+select * from Books;
+
+-- Question 2
+create table Skill(
+emp_id int,
+emp_name varchar(100),
+skill varchar(100),
+primary key(emp_id,emp_name));
+
+insert into Skill(emp_id,emp_name,skill)
+values
+(101,'John','java'),
+(101,'John','Python'),
+(102,'Mary','Sql'),
+(102,'Mary','HTML'),
+(102,'Mary','CSS');
+
+alter table Skill
+drop primary key;
+
+alter table skill
+add primary key(emp_id,skill);
+
+select * from skill;
+
+create table orders(
+order_id int ,
+name varchar(100),
+item varchar(100),
+primary key(order_id,item)
+);
+
+insert into orders(order_id,name,item)
+values
+(1,'Asha','Pen'),
+(1,'Asha','Pencil'),
+(1,'Asha','Eraser'),
+(2,'Ravi','Notebook');
+
+select * from orders;
